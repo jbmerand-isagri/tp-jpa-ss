@@ -5,15 +5,40 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import otg.ss.bank.jpa.exception.BalanceNotEnoughException;
 import otg.ss.bank.jpa.exception.NegOrNullAmountException;
 
+@Entity
+@Table(name = "ACCOUNT")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TYPE")
 public abstract class Account implements Serializable {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	protected Long id;
+	@Column(name = "BALANCE")
 	protected double balance;
-
+	@ManyToOne
+	@JoinColumn(name = "AGENCY_ID")
 	protected Agency agency;
+	@OneToMany(mappedBy = "account", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	protected Set<Transaction> transactions;
 
 	public Account() {
@@ -76,11 +101,15 @@ public abstract class Account implements Serializable {
 		return agency;
 	}
 
-	/*
-	 * public void setAgency( Agency agency ) { if ( this.agency != null ) {
-	 * this.agency.getAccounts().remove( this ); } this.agency = agency; if (
-	 * this.agency != null ) { this.agency.getAccounts().add( this ); } }
-	 */
+	public void setAgency(Agency agency) {
+		if (this.agency != null) {
+			this.agency.getAccounts().remove(this);
+		}
+		this.agency = agency;
+		if (this.agency != null) {
+			this.agency.getAccounts().add(this);
+		}
+	}
 
 	public Set<Transaction> getTransactions() {
 		return transactions;

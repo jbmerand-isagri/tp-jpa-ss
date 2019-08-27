@@ -2,13 +2,18 @@ package otg.ss.bank.jpa.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address implements Serializable {
+	@Column(name = "NUMBER")
 	private String number;
+	@Column(name = "STREET")
 	private String street;
+	@Column(name = "ZIP_CODE")
 	private String zipCode;
+	@Column(name = "CITY")
 	private String city;
 
 	public Address() {

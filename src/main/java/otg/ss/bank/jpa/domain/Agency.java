@@ -1,15 +1,19 @@
 package otg.ss.bank.jpa.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "AGENCY")
@@ -17,19 +21,21 @@ public class Agency implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private Long id;
+	@Column(name = "CODE")
 	private String code;
 	@Embedded
 	private Address address;
-	@Transient
+	@OneToMany(mappedBy = "agency", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private Set<Account> accounts;
-	@Transient
+	@OneToMany(mappedBy = "agency", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
 	private Set<Transaction> transactions;
 
 	public Agency() {
 		address = new Address();
-		// accounts = new HashSet<>();
-		// transactions = new HashSet<>();
+		accounts = new HashSet<>();
+		transactions = new HashSet<>();
 	}
 
 	public Agency(String code, Address address) {
@@ -69,26 +75,29 @@ public class Agency implements Serializable {
 		this.address = address;
 	}
 
-//	public Set<Account> getAccounts() {
-//		return accounts;
-//	}
+	public Set<Account> getAccounts() {
+		return accounts;
+	}
 
-	/*
-	 * public void setAccounts(Set<Account> accounts) { this.accounts = accounts; }
-	 */
+	public void setAccounts(Set<Account> accounts) {
+		this.accounts = accounts;
+	}
 
-	/*
-	 * public void addAccount(Account account) { account.setAgency(this); }
-	 * 
-	 * public void removeAccount(Account account) { account.setAgency(null); }
-	 */
+	public void addAccount(Account account) {
+		account.setAgency(this);
+	}
 
-	/*
-	 * public Set<Transaction> getTransactions() { return transactions; }
-	 * 
-	 * public void setTransactions(Set<Transaction> transactions) {
-	 * this.transactions = transactions; }
-	 */
+	public void removeAccount(Account account) {
+		account.setAgency(null);
+	}
+
+	public Set<Transaction> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(Set<Transaction> transactions) {
+		this.transactions = transactions;
+	}
 
 	@Override
 	public String toString() {

@@ -1,5 +1,7 @@
 package otg.ss.bank.jpa;
 
+import java.util.Date;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -7,6 +9,12 @@ import javax.persistence.TypedQuery;
 
 import otg.ss.bank.jpa.domain.Address;
 import otg.ss.bank.jpa.domain.Agency;
+import otg.ss.bank.jpa.domain.ChargedAccount;
+import otg.ss.bank.jpa.domain.SavingAccount;
+import otg.ss.bank.jpa.domain.SimpleAccount;
+import otg.ss.bank.jpa.domain.Transaction;
+import otg.ss.bank.jpa.domain.Transaction.Type;
+import otg.ss.bank.jpa.domain.TransactionId;
 
 public class App {
 
@@ -20,8 +28,25 @@ public class App {
 			em = emf.createEntityManager();
 
 			Agency agency = new Agency();
-
 			Address address = new Address("2bis", "rue Victor Hugo", "56000", "Longbourg");
+			ChargedAccount chargedAccount = new ChargedAccount(53, 23);
+			chargedAccount.setAgency(agency);
+			SavingAccount savingAccount = new SavingAccount(45009, 4);
+			savingAccount.setAgency(agency);
+			SimpleAccount simpleAccount = new SimpleAccount(4324, 34);
+			simpleAccount.setAgency(agency);
+			Transaction transaction = new Transaction();
+			transaction.setAgency(agency);
+			transaction.setAccount(savingAccount);
+			TransactionId transactionId = new TransactionId();
+			transactionId.setAccountId(1L);
+			transactionId.setAgencyId(1L);
+			transactionId.setDate(new Date());
+			transaction.setId(transactionId);
+			transaction.setAmount(23);
+			transaction.setBalanceBefore(43);
+			transaction.setBalanceBefore(22);
+			transaction.setType(Type.IPM);
 
 			agency.setCode("45a");
 			agency.setAddress(address);

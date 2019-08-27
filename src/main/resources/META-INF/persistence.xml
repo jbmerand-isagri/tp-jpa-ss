@@ -8,6 +8,13 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
 		<class>domain.Agency</class>
+		<class>domain.Account</class>
+		<class>domain.SimpleAccount</class>
+		<class>domain.SavingAccount</class>
+		<class>domain.ChargedAccount</class>
+		<class>domain.Agency</class>
+		<class>domain.Transaction</class>
+		<class>domain.TransactionId</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
