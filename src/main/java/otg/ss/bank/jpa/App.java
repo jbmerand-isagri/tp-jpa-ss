@@ -1,12 +1,14 @@
 package otg.ss.bank.jpa;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import otg.ss.bank.jpa.dal.DAO;
 import otg.ss.bank.jpa.domain.Address;
 import otg.ss.bank.jpa.domain.Agency;
 import otg.ss.bank.jpa.domain.ChargedAccount;
@@ -104,5 +106,12 @@ public class App {
 			}
 		}
 
+		// utilisation DAO personnalisée
+		DAO<Agency, Long> agencyDAO = new DAO<>(Agency.class);
+		Agency agencyX = agencyDAO.findById(1L);
+		System.out.println(agencyX);
+
+		List<Agency> agenciesList = agencyDAO.findAll();
+		System.out.println(agenciesList);
 	}
 }
